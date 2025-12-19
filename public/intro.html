@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Skipsee is the best free random video chat app to meet strangers worldwide. Talk to new people instantly, make friends globally, and chat anonymously. No login required for guest access.">
+    <meta name="keywords"
+        content="random video chat, talk to strangers, omegle alternative, meet new people, free video chat, global chat, anonymous chat, live video call">
+    <meta name="author" content="Skipsee">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://skipsee.com/">
+    <meta property="og:title" content="Skipsee - Talk to Strangers | Random Video Chat">
+    <meta property="og:description"
+        content="Connect instantly with strangers worldwide on Skipsee. promoting safe, fun, and random video connections.">
+    <meta property="og:image" content="https://skipsee.com/og-image.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://skipsee.com/">
+    <meta property="twitter:title" content="Skipsee - Talk to Strangers | Random Video Chat">
+    <meta property="twitter:description"
+        content="Connect instantly with strangers worldwide on Skipsee. promoting safe, fun, and random video connections.">
+    <meta property="twitter:image" content="https://skipsee.com/og-image.jpg">
+
+    <title>Skipsee - Talk to Strangers</title>
+    <link rel="icon" type="image/svg+xml" href="Skipsee-3.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        // Custom Brand Palette derived from Logo
+                        brand: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            200: '#fed7aa',
+                            300: '#fdba74',
+                            400: '#fb923c',
+                            500: '#ff751f', // LOGO ORANGE
+                            600: '#ea580c',
+                            700: '#c2410c',
+                            800: '#9a3412',
+                            900: '#7c2d12',
+                        },
+                        // Logo Blue
+                        sky: {
+                            400: '#38b6ff', // LOGO BLUE
+                            500: '#0ea5e9',
+                        }
+                    },
+                    animation: {
+                        'scroll-up': 'scrollUp 40s linear infinite',
+                        'scroll-down': 'scrollDown 40s linear infinite',
+                        'scroll-up-slow': 'scrollUp 60s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out 3s infinite',
+                        'pulse-glow': 'pulseGlow 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        scrollUp: {
+                            '0%': { transform: 'translateY(0)' },
+                            '100%': { transform: 'translateY(-50%)' },
+                        },
+                        scrollDown: {
+                            '0%': { transform: 'translateY(-50%)' },
+                            '100%': { transform: 'translateY(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: 0.3 },
+                            '50%': { opacity: 0.6 },
+                        },
+                        twinkle: {
+                            '0%': { opacity: 0.2, transform: 'translateY(0)' },
+                            '100%': { opacity: 0.5, transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes pulse-glow-orange {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.3;
+            }
+
+            33% {
+                transform: translate(30px, -50px) scale(1.1);
+                opacity: 0.5;
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+                opacity: 0.4;
+            }
+
+            100% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.3;
+            }
+        }
+
+        @keyframes pulse-glow-blue {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.3;
+            }
+
+            33% {
+                transform: translate(-30px, 50px) scale(1.2);
+                opacity: 0.5;
+            }
+
+            66% {
+                transform: translate(20px, -20px) scale(0.85);
+                opacity: 0.4;
+            }
+
+            100% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.3;
+            }
+        }
+
+        body {
+            /* Deepest Midnight Black to match the Logo's modern vibe */
+            background-color: #030305;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Glows using Logo Colors */
+        .glow-orange {
+            position: fixed;
+            top: -20%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(255, 117, 31, 0.15) 0%, transparent 70%);
+            /* #ff751f */
+            filter: blur(80px);
+            z-index: -1;
+            animation: pulse-glow-orange 15s ease-in-out infinite alternate;
+        }
+
+        .glow-blue {
+            position: fixed;
+            bottom: -20%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(56, 182, 255, 0.12) 0%, transparent 70%);
+            /* #38b6ff */
+            filter: blur(80px);
+            z-index: -1;
+            animation: pulse-glow-blue 18s ease-in-out infinite alternate-reverse;
+        }
+
+        /* Floating Particles / Stars */
+        .stars,
+        .stars2 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -15;
+            pointer-events: none;
+        }
+
+        .stars {
+            background-image:
+                radial-gradient(1px 1px at 25px 5px, white, transparent),
+                radial-gradient(1px 1px at 50px 25px, white, transparent),
+                radial-gradient(1px 1px at 125px 20px, white, transparent),
+                radial-gradient(1.5px 1.5px at 200px 150px, white, transparent),
+                radial-gradient(1px 1px at 100px 250px, white, transparent),
+                radial-gradient(1px 1px at 350px 300px, white, transparent);
+            background-size: 550px 550px;
+            opacity: 0.3;
+            animation: twinkle 5s ease-in-out infinite alternate;
+        }
+
+        .stars2 {
+            background-image:
+                radial-gradient(1px 1px at 100px 150px, white, transparent),
+                radial-gradient(1px 1px at 200px 50px, white, transparent),
+                radial-gradient(1px 1px at 300px 250px, white, transparent);
+            background-size: 400px 400px;
+            opacity: 0.2;
+            animation: twinkle 7s ease-in-out infinite alternate-reverse;
+        }
+
+        .glass-panel {
+            background: rgba(20, 20, 25, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow:
+                0 4px 20px -1px rgba(0, 0, 0, 0.5),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-modern {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-modern:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px -5px rgba(255, 117, 31, 0.4);
+            /* Orange Glow */
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+        }
+
+        .btn-secondary:hover {
+            border-color: #38b6ff;
+            /* Blue Hover */
+            color: #fff;
+            background: rgba(56, 182, 255, 0.1);
+            box-shadow: 0 0 20px -5px rgba(56, 182, 255, 0.2);
+        }
+
+        .marquee-mask {
+            mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+        }
+
+        .scroll-img {
+            backface-visibility: hidden;
+            transform: translateZ(0);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-[#030305] text-slate-300 font-sans selection:bg-brand-500 selection:text-brand-500 overflow-x-hidden relative">
+
+    <!-- Background Layers -->
+    <div class="fixed inset-0 bg-[#030305] -z-20"></div> <!-- Solid Base -->
+    <div class="glow-orange"></div> <!-- Top Left Logo Orange -->
+    <div class="glow-blue"></div> <!-- Bottom Right Logo Blue -->
+    <div class="stars"></div>
+    <div class="stars2"></div>
+
+    <!-- Navbar -->
+    <nav class="relative z-50 flex-shrink-0 flex items-center justify-between px-6 py-4 md:px-12 h-28">
+        <div class="flex items-center gap-12">
+            <a href="#" class="flex items-center gap-3 group">
+                <!-- Bigger Logo, No Text -->
+                <img src="Skipsee-3.svg" alt="Skipsee"
+                    class="h-16 w-auto object-contain transition-transform group-hover:scale-105 group-hover:drop-shadow-[0_0_20px_rgba(56,182,255,0.6)]">
+            </a>
+
+            <div class="hidden md:flex items-center gap-10 text-[15px] font-semibold text-gray-400">
+                <a href="#home" class="text-white hover:text-brand-500 transition-colors">Home</a>
+                <a href="#features" class="hover:text-white transition-colors">Features</a>
+                <a href="#safety" class="hover:text-white transition-colors">Safety</a>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <a href="login.html"
+                class="px-7 py-3 rounded-full font-bold text-sm transition-all bg-white/5 text-white border border-white/10 hover:border-sky-400 hover:bg-sky-400/10 hover:text-sky-400 hover:shadow-[0_0_15px_rgba(56,182,255,0.3)]">
+                Log in
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="relative w-full flex flex-col">
+
+        <!-- Hero Section (Wrapped) -->
+        <section id="home"
+            class="w-full max-w-[1700px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-screen overflow-hidden relative">
+
+            <!-- LEFT COLUMN -->
+            <div class="flex flex-col justify-start pt-28 md:pt-40 px-6 md:px-12 lg:px-20 relative z-20 h-full">
+
+                <div class="max-w-xl mx-auto lg:mx-0 space-y-10">
+
+                    <!-- Badge -->
+                    <div
+                        class="inline-flex items-center gap-2.5 px-4 py-2 bg-white/5 backdrop-blur rounded-full border border-white/10 w-fit">
+                        <span class="relative flex h-2.5 w-2.5">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-500 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-500"></span>
+                        </span>
+                        <span class="text-sm font-semibold text-gray-300">
+                            <span class="text-white font-bold tabular-nums" id="matching-count">204,392</span> people
+                            live
+                        </span>
+                    </div>
+
+                    <!-- Headline with Gradient Matching Logo -->
+                    <h1
+                        class="font-display font-extrabold text-6xl md:text-7xl lg:text-8xl leading-[0.9] tracking-tight text-white">
+                        Talk to <br>
+                        <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-sky-400">Strangers.</span>
+                    </h1>
+
+                    <!-- Subtext -->
+                    <p class="text-lg md:text-xl text-gray-400 font-medium leading-relaxed max-w-md">
+                        Instant video connections. No signup required to start matching.
+                    </p>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col gap-4 max-w-md pt-2">
+                        <!-- Main Button: Logo Orange -->
+                        <a href="login.html"
+                            class="btn-modern flex items-center justify-center gap-4 bg-brand-500 hover:bg-brand-600 text-white px-8 py-5 rounded-2xl font-bold text-xl shadow-lg shadow-brand-500/20">
+                            <i class="fa-solid fa-video text-white"></i>
+                            <span>Start Video Chat</span>
+                        </a>
+
+                        <div class="grid grid-cols-1 gap-3">
+                            <button
+                                class="btn-modern btn-secondary flex items-center justify-center gap-3 py-4 rounded-xl font-semibold">
+                                <i class="fa-solid fa-globe text-sky-400"></i>
+                                <span>Global</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div class="hidden lg:block relative h-full overflow-hidden">
+
+                <!-- Scrolling Grid -->
+                <div
+                    class="flex gap-5 h-[140%] -mt-[10%] marquee-mask rotate-[2deg] opacity-100 scale-100 origin-center justify-center pl-10">
+
+                    <!-- Col 1 -->
+                    <div class="flex flex-col gap-5 w-52 animate-scroll-up shrink-0">
+                        <!-- Profile 1 -->
+                        <div class="relative w-full shrink-0 group">
+                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop"
+                                class="w-full h-72 object-cover rounded-3xl scroll-img shadow-lg border-2 border-brand-500 hover:opacity-100 transition-opacity">
+                            <div
+                                class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 via-black/50 to-transparent rounded-b-3xl flex flex-col justify-end p-4">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-white font-bold text-lg leading-none font-display">Jessica,
+                                        22</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs font-medium text-gray-200">
+                                    <img src="https://flagcdn.com/w20/ca.png"
+                                        class="w-4 h-auto rounded-[2px] shadow-sm">
+                                    <span>Toronto, CA</span>
+                                    <span class="w-1 h-1 bg-gray-400 rounded-full mx-0.5"></span>
+                                    <span class="text-green-500 font-bold flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                                        Online
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profile 2 -->
+                        <div class="relative w-full shrink-0 group">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop"
+                                class="w-full h-80 object-cover rounded-3xl scroll-img shadow-lg border-2 border-brand-500 hover:opacity-100 transition-opacity">
+                            <div
+                                class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 via-black/50 to-transparent rounded-b-3xl flex flex-col justify-end p-4">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-white font-bold text-lg leading-none font-display">Sarah,
+                                        23</span>
+                                    <i class="fa-solid fa-circle-check text-sky-400 text-xs"></i>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs font-medium text-gray-200">
+                                    <img src="https://flagcdn.com/w20/us.png"
+                                        class="w-4 h-auto rounded-[2px] shadow-sm">
+                                    <span>New York, USA</span>
+                                    <span class="w-1 h-1 bg-gray-400 rounded-full mx-0.5"></span>
+                                    <span class="text-green-500 font-bold flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                                        Online
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Duplicate Profile 1 -->
+                        <div class="relative w-full shrink-0 group">
+                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop"
+                                class="w-full h-72 object-cover rounded-3xl scroll-img shadow-lg border-2 border-brand-500 hover:opacity-100 transition-opacity">
+                            <div
+                                class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 via-black/50 to-transparent rounded-b-3xl flex flex-col justify-end p-4">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-white font-bold text-lg leading-none font-display">Jessica,
+                                        22</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs font-medium text-gray-200">
+                                    <img src="https://flagcdn.com/w20/ca.png"
+                                        class="w-4 h-auto rounded-[2px] shadow-sm">
+                                    <span>Toronto, CA</span>
+                                    <span class="w-1 h-1 bg-gray-400 rounded-full mx-0.5"></span>
+                                    <span class="text-green-500 font-bold flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                                        Online
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Duplicate Profile 2 -->
+                        <div class="relative w-full shrink-0 group">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop"
+                                class="w-full h-80 object-cover rounded-3xl scroll-img shadow-lg border-2 border-brand-500 hover:opacity-100 transition-opacity">
+                            <div
+                                class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 via-black/50 to-transparent rounded-b-3xl flex flex-col justify-end p-4">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-white font-bold text-lg leading-none font-display">Sarah,
+                                        23</span>
+                                    <i class="fa-solid fa-circle-check text-sky-400 text-xs"></i>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs font-medium text-gray-200">
+                                    <img src="https://flagcdn.com/w20/us.png"
+                                        class="w-4 h-auto rounded-[2px] shadow-sm">
+                                    <span>New York, USA</span>
+                                    <span class="w-1 h-1 bg-gray-400 rounded-full mx-0.5"></span>
+                                    <span class="text-green-500 font-bold flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                                        Online
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Col 2 -->
+                    <div class="flex flex-col gap-5 w-52 animate-scroll-down pt-32 shrink-0">
+                        <!-- Profile 3 -->
+                        <div class="relative w-full shrink-0 group">
+                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=600&fit=crop"
+                                class="w-full h-80 object-cover rounded-3xl scroll-img shadow-lg border-2 border-brand-500 hover:opacity-100 transition-opacity">
+                            <div
+                                class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 via-black/50 to-transparent rounded-b-3xl flex flex-col justify-end p-4">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-white font-bold text-lg leading-none font-display">Emma, 20</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs font-medium text-gray-200">
+                                    <img src="https://flagcdn.com/w20/gb.png"
+                                        class="w-4 h-auto rounded-[2px] shadow-sm">
+                                    <span>London, UK</span>
+                                    <span class="w-1 h-1 bg-gray-400 rounded-full mx-0.5"></span>
+                                    <span class="text-green-500 font-bold flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                                        Online
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profile 4 -->
+                        <div class="relative w-full shrink-0 group">
+                            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=600&fit=crop"
+                                class="w-full h-64 object-cover rounded-3xl scroll-img shadow-lg border-2 border-brand-500 hover:opacity-100 transition-opacity">
+                            <div
+                                class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 via-black/50 to-transparent rounded-b-3xl flex flex-col justify-end p-4">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-white font-bold text-lg leading-none font-display">James,
+                                        24</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs font-medium text-gray-200">
+                                    <img src="https://flagcdn.com/w20/au.png"
+                                        class="w-4 h-auto rounded-[2px] shadow-sm">
+                                    <span>Sydney, AU</span>
+                                    <span class="w-1 h-1 bg-gray-400 rounded-full mx-0.5"></span>
+                                    <span class="text-green-500 font-bold flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                                        Online
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dupes -->
+                        <div class="relative w-full shrink-0 group">
+                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=600&fit=crop"
+                                class="w-full h-80 object-cover rounded-3xl scroll-img shadow-lg border-2 border-brand-500 hover:opacity-100 transition-opacity">
+                            <div
+                                class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 via-black/50 to-transparent rounded-b-3xl flex flex-col justify-end p-4">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-white font-bold text-lg leading-none font-display">Emma, 20</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs font-medium text-gray-200">
+                                    <img src="https://flagcdn.com/w20/gb.png"
+                                        class="w-4 h-auto rounded-[2px] shadow-sm">
+                                    <span>London, UK</span>
+                                    <span class="w-1 h-1 bg-gray-400 rounded-full mx-0.5"></span>
+                                    <span class="text-green-500 font-bold flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                                        Online
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="relative w-full shrink-0 group">
+                            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=600&fit=crop"
+                                class="w-full h-64 object-cover rounded-3xl scroll-img shadow-lg border-2 border-brand-500 hover:opacity-100 transition-opacity">
+                            <div
+                                class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 via-black/50 to-transparent rounded-b-3xl flex flex-col justify-end p-4">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-white font-bold text-lg leading-none font-display">James,
+                                        24</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs font-medium text-gray-200">
+                                    <img src="https://flagcdn.com/w20/au.png"
+                                        class="w-4 h-auto rounded-[2px] shadow-sm">
+                                    <span>Sydney, AU</span>
+                                    <span class="w-1 h-1 bg-gray-400 rounded-full mx-0.5"></span>
+                                    <span class="text-green-500 font-bold flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                                        Online
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Col 3 -->
+                    <div class="flex flex-col gap-5 w-52 animate-scroll-up-slow shrink-0">
+                        <!-- Profile 5 -->
+                        <div class="relative w-full shrink-0 group">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=600&fit=crop"
+                                class="w-full h-64 object-cover rounded-3xl scroll-img shadow-lg border-2 border-brand-500 hover:opacity-100 transition-opacity">
+                            <div
+                                class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 via-black/50 to-transparent rounded-b-3xl flex flex-col justify-end p-4">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-white font-bold text-lg leading-none font-display">Priya,
+                                        21</span>
+                                    <i class="fa-solid fa-circle-check text-sky-400 text-xs"></i>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs font-medium text-gray-200">
+                                    <img src="https://flagcdn.com/w20/in.png"
+                                        class="w-4 h-auto rounded-[2px] shadow-sm">
+                                    <span>Mumbai, IN</span>
+                                    <span class="w-1 h-1 bg-gray-400 rounded-full mx-0.5"></span>
+                                    <span class="text-green-500 font-bold flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                                        Online
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profile 6 -->
+                        <div class="relative w-full shrink-0 group">
+                            <img src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=400&h=600&fit=crop"
+                                class="w-full h-80 object-cover rounded-3xl scroll-img shadow-lg border-2 border-brand-500 hover:opacity-100 transition-opacity">
+                            <div
+                                class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 via-black/50 to-transparent rounded-b-3xl flex flex-col justify-end p-4">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-white font-bold text-lg leading-none font-display">Akira,
+                                        25</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs font-medium text-gray-200">
+                                    <img src="https://flagcdn.com/w20/jp.png"
+                                        class="w-4 h-auto rounded-[2px] shadow-sm">
+                                    <span>Tokyo, JP</span>
+                                    <span class="w-1 h-1 bg-gray-400 rounded-full mx-0.5"></span>
+                                    <span class="text-green-500 font-bold flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                                        Online
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dupes -->
+                        <div class="relative w-full shrink-0 group">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=600&fit=crop"
+                                class="w-full h-64 object-cover rounded-3xl scroll-img shadow-lg border-2 border-brand-500 hover:opacity-100 transition-opacity">
+                            <div
+                                class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 via-black/50 to-transparent rounded-b-3xl flex flex-col justify-end p-4">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-white font-bold text-lg leading-none font-display">Priya,
+                                        21</span>
+                                    <i class="fa-solid fa-circle-check text-sky-400 text-xs"></i>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs font-medium text-gray-200">
+                                    <img src="https://flagcdn.com/w20/in.png"
+                                        class="w-4 h-auto rounded-[2px] shadow-sm">
+                                    <span>Mumbai, IN</span>
+                                    <span class="w-1 h-1 bg-gray-400 rounded-full mx-0.5"></span>
+                                    <span class="text-green-500 font-bold flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                                        Online
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="relative w-full shrink-0 group">
+                            <img src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=400&h=600&fit=crop"
+                                class="w-full h-80 object-cover rounded-3xl scroll-img shadow-lg border-2 border-brand-500 hover:opacity-100 transition-opacity">
+                            <div
+                                class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 via-black/50 to-transparent rounded-b-3xl flex flex-col justify-end p-4">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-white font-bold text-lg leading-none font-display">Akira,
+                                        25</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs font-medium text-gray-200">
+                                    <img src="https://flagcdn.com/w20/jp.png"
+                                        class="w-4 h-auto rounded-[2px] shadow-sm">
+                                    <span>Tokyo, JP</span>
+                                    <span class="w-1 h-1 bg-gray-400 rounded-full mx-0.5"></span>
+                                    <span class="text-green-500 font-bold flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                                        Online
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Polished Glass Overlays (Dark Mode) -->
+                <div class="absolute inset-0 pointer-events-none z-30">
+
+                    <!-- Notification -->
+                    <div
+                        class="absolute top-[25%] left-[6%] glass-panel px-4 py-3 rounded-2xl flex items-center gap-3 animate-float border-l-4 border-l-brand-500">
+                        <div class="w-10 h-10 rounded-full overflow-hidden border border-white/20 shadow-sm">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop"
+                                class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-white leading-none">Sarah</p>
+                            <p class="text-xs text-brand-400 font-medium mt-1">Sent a message...</p>
+                        </div>
+                    </div>
+
+                    <!-- Match Badge -->
+                    <div
+                        class="absolute bottom-[20%] left-[18%] glass-panel p-2 pl-3 pr-4 rounded-full flex items-center gap-3 animate-float-delayed border-r-4 border-r-sky-400">
+                        <div class="flex -space-x-3">
+                            <img src="https://flagcdn.com/w40/us.png"
+                                class="w-8 h-8 rounded-full border border-black/50 object-cover shadow-sm">
+                            <img src="https://flagcdn.com/w40/br.png"
+                                class="w-8 h-8 rounded-full border border-black/50 object-cover shadow-sm">
+                        </div>
+                        <div class="text-xs font-bold text-gray-200">It's a match!</div>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+        <!-- About / Features Section -->
+        <section id="features"
+            class="relative z-20 w-full py-24 px-6 md:px-12 bg-gradient-to-b from-[#030305] to-[#0a0a0f]">
+            <div class="max-w-7xl mx-auto">
+
+                <!-- Section Header -->
+                <div class="text-center max-w-3xl mx-auto mb-20 space-y-6">
+                    <h2 class="font-display font-bold text-4xl md:text-5xl text-white tracking-tight">
+                        Connect with the <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-sky-400">World</span>
+                    </h2>
+                    <p class="text-lg text-gray-400 leading-relaxed">
+                        Our random video chat platform removes borders. Whether you're here to make friends, perform
+                        magic, or discuss music, Skipsee is your gateway to global connections.
+                    </p>
+                </div>
+
+                <!-- Features Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                    <!-- Feature 1: Global -->
+                    <div
+                        class="p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-brand-500/50 transition-colors group">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-brand-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-earth-americas text-2xl text-brand-500"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-2xl text-white mb-4">Global Connection</h3>
+                        <p class="text-gray-400 leading-relaxed">
+                            Distance means nothing here. Connect instantly with people from over 190 countries.
+                            Experience new cultures and languages from the comfort of your home.
+                        </p>
+                    </div>
+
+                    <!-- Feature 2: Interests -->
+                    <div
+                        class="p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-sky-400/50 transition-colors group">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-sky-400/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-wand-magic-sparkles text-2xl text-sky-400"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-2xl text-white mb-4">Interest Match</h3>
+                        <p class="text-gray-400 leading-relaxed">
+                            Don't leave it completely to chance. Filter matches by your passions. Type in <span
+                                class="text-sky-400 font-semibold">Music</span>, <span
+                                class="text-brand-500 font-semibold">Magic</span>, or any field you love to find
+                            like-minded people.
+                        </p>
+                    </div>
+
+                    <!-- Feature 3: Anonymous -->
+                    <div
+                        class="p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-purple-500/50 transition-colors group">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-purple-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-user-secret text-2xl text-purple-500"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-2xl text-white mb-4">Stay Anonymous</h3>
+                        <p class="text-gray-400 leading-relaxed">
+                            Chat freely without revealing your identity. You decide what to share and when. Safe,
+                            secure, and completely anonymous interactions.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Safety Section -->
+        <section id="safety" class="relative z-20 w-full py-24 px-6 md:px-12 bg-[#0a0a0f] border-t border-white/5">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-green-500/10 mb-8">
+                    <i class="fa-solid fa-shield-halved text-3xl text-green-500"></i>
+                </div>
+                <h2 class="font-display font-bold text-3xl md:text-4xl text-white mb-6">Your Safety Matters</h2>
+                <p class="text-lg text-gray-400 leading-relaxed mb-8 max-w-2xl mx-auto">
+                    We are committed to maintaining a safe community. If you see something that violates our guidelines,
+                    please report it immediately. Our team reviews report 24/7 to ensure a secure environment for
+                    everyone.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="legal/guidelines.html"
+                        class="px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium transition-colors border border-white/10">
+                        Read Guidelines
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer
+        class="relative bg-[#0a0a0f] py-8 text-center text-gray-600 text-[11px] font-medium tracking-wide border-t border-white/5">
+        <div class="flex items-center justify-center gap-6 mb-4">
+            <a href="#" class="hover:text-brand-500 transition-colors">Privacy Policy</a>
+            <a href="#" class="hover:text-brand-500 transition-colors">Terms of Service</a>
+            <a href="#" class="hover:text-brand-500 transition-colors">Community Guidelines</a>
+        </div>
+        &copy; 2024 Skipsee Inc. All rights reserved.
+    </footer>
+
+    <script>
+        // Smooth Number Animation
+        const countEl = document.getElementById('matching-count');
+        let count = 204392;
+        setInterval(() => {
+            count += Math.floor(Math.random() * 50) - 20;
+            countEl.innerText = count.toLocaleString();
+        }, 2000);
+    </script>
+</body>
+
+</html>

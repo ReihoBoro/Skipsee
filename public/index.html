@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Skipsee - The ultimate random video chat experience. Connect with strangers, use fun filters, and chat anonymously in a safe environment.">
+    <meta name="keywords" content="video chat, webRTC, random chat, meet strangers, skipsee app">
+    <meta name="robots" content="noindex, nofollow">
+    <!-- App page usually shouldn't be indexed directly if it requires auth/interaction -->
+
+    <title>Talk to strangers! - Random Video Chat</title>
+    <link rel="icon" type="image/svg+xml" href="Skipsee-3.svg">
+    <link rel="icon" type="image/svg+xml" href="Skipsee-3.svg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;700;800&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        window.tailwind = {
+            darkMode: 'class',
+            config: {
+                darkMode: 'class',
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                            display: ['Outfit', 'sans-serif'],
+                        },
+                        colors: {
+                            brand: {
+                                50: '#fff7ed',
+                                100: '#ffedd5',
+                                theme: {
+                                    extend: {
+                                        fontFamily: {
+                                            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                                            display: ['Outfit', 'sans-serif'],
+                                        },
+                                        colors: {
+                                            brand: {
+                                                50: '#fff7ed',
+                                                100: '#ffedd5',
+                                                200: '#fed7aa',
+                                                300: '#fdba74',
+                                                400: '#fb923c',
+                                                500: '#ff751f',
+                                                600: '#ea580c',
+                                                700: '#c2410c',
+                                                800: '#9a3412',
+                                                900: '#7c2d12',
+                                            },
+                                            sky: {
+                                                400: '#38b6ff',
+                                                500: '#0ea5e9',
+                                            }
+                                        },
+                                        animation: {
+                                            'pulse-glow-orange': 'pulse-glow-orange 15s ease-in-out infinite alternate',
+                                            'pulse-glow-blue': 'pulse-glow-blue 18s ease-in-out infinite alternate-reverse',
+                                            'twinkle': 'twinkle 5s ease-in-out infinite alternate',
+                                            'float': 'float 6s ease-in-out infinite',
+                                        },
+                                    }
+                                }
+                            }
+    </script>
+
+    <style>
+        /* Modern Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        /* DVH Support & Mobile Fixes */
+        body {
+            /* Fallback */
+            height: 100vh;
+            /* Modern browsers */
+            height: 100dvh;
+            overflow: hidden;
+            /* Prevent rubber-banding on iOS */
+            overscroll-behavior: none;
+        }
+
+        @keyframes pulse-glow-orange {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.3;
+            }
+
+            50% {
+                transform: translate(30px, -50px) scale(1.2);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.3;
+            }
+        }
+
+        @keyframes pulse-glow-blue {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.3;
+            }
+
+            50% {
+                transform: translate(-30px, 50px) scale(1.2);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.3;
+            }
+        }
+
+        @keyframes twinkle {
+            0% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0.7;
+                transform: scale(1.1);
+            }
+        }
+
+        .glass-panel {
+            background: rgba(15, 15, 20, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="script.js?v=debug_1.3" defer></script>
+
+    <style>
+        /* Custom Animations for Icons */
+        @keyframes spin-slow-y {
+            0% {
+                transform: rotateY(0deg);
+            }
+
+            100% {
+                transform: rotateY(360deg);
+            }
+        }
+
+        .animate-spin-slow-y {
+            animation: spin-slow-y 5s linear infinite;
+        }
+
+        @keyframes glow-pulse-gold {
+            0% {
+                filter: drop-shadow(0 0 2px rgba(234, 179, 8, 0.4));
+            }
+
+            50% {
+                filter: drop-shadow(0 0 6px rgba(234, 179, 8, 0.8));
+            }
+
+            100% {
+                filter: drop-shadow(0 0 2px rgba(234, 179, 8, 0.4));
+            }
+        }
+
+        .animate-glow-gold {
+            animation: glow-pulse-gold 2s infinite ease-in-out;
+        }
+
+        /* Premium Button Animation */
+        @keyframes subtle-shimmer {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .btn-premium {
+            background-size: 200% 200%;
+            animation: subtle-shimmer 3s ease infinite;
+        }
+
+        .btn-press-anim:active {
+            transform: scale(0.96);
+        }
+
+        /* --- MOBILE UI OVERRIDES (START) --- */
+        @media (max-width: 768px) {
+
+            /* 1. Stack Layout */
+            #app {
+                flex-direction: column !important;
+                padding: 12px !important;
+                gap: 12px !important;
+                /* Prevent overflow on mobile */
+                height: calc(100dvh - 60px) !important;
+            }
+
+            /* 2. Stranger View (Top Half) */
+            #main-view {
+                flex: 1 !important;
+                /* Takes available space */
+                width: 100% !important;
+                border-radius: 1.5rem !important;
+            }
+
+            /* 3. Sidebar (Bottom Half - User Video + Controls) */
+            #sidebar {
+                display: flex !important;
+                /* UNHIDE SIDEBAR */
+                flex: none !important;
+                width: 100% !important;
+                height: 280px !important;
+                /* Fixed height for controls area */
+                border-radius: 1.5rem !important;
+                margin-top: 0 !important;
+            }
+
+            #user-video-wrapper {
+                /* Make video smaller in the controls card */
+                flex: none !important;
+                height: 120px !important;
+                border-radius: 1rem !important;
+                margin: 12px !important;
+                overflow: hidden;
+            }
+
+            /* Hide the large overlay controls on mobile video since we have buttons below */
+            #user-video-wrapper .group-hover\/video\:opacity-100 {
+                opacity: 1 !important;
+                /* Always show, but maybe stylistic change needed? */
+                background: transparent !important;
+            }
+
+            /* Hide the big floating buttons to avoid clutter on small video */
+            #user-video-wrapper button {
+                display: none !important;
+            }
+
+            /* 4. Controls Section (Make visible and spaced) */
+            #sidebar>div:last-child {
+                position: relative !important;
+                background: none !important;
+                padding: 0 16px 16px 16px !important;
+                gap: 8px !important;
+            }
+
+            /* 5. Mobile Action Buttons Row */
+            .mobile-actions {
+                display: flex !important;
+                gap: 12px;
+                justify-content: center;
+                margin-top: 8px;
+            }
+
+            .mobile-btn {
+                padding: 12px !important;
+                border-radius: 12px !important;
+                background: rgba(255, 255, 255, 0.1);
+                color: white;
+                flex: 1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+
+        /* --- MOBILE UI OVERRIDES (END) --- */
+    </style>
+</head>
+
+<body
+    class="grid grid-rows-[auto_1fr] h-full w-full overflow-hidden bg-[#030305] text-slate-200 font-sans selection:bg-brand-500 selection:text-white relative">
+
+    <!-- Background Effects -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div
+            class="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vw] bg-brand-500/15 blur-[80px] animate-[pulse-glow-orange_15s_infinite]">
+        </div>
+        <div
+            class="absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-sky-500/10 blur-[80px] animate-[pulse-glow-blue_18s_infinite]">
+        </div>
+    </div>
+
+    <!-- Header (Compact on Mobile) -->
+    <div class="w-full bg-[#030305]/80 backdrop-blur-md border-b border-white/5 flex-shrink-0 z-50 relative">
+        <div class="w-full py-2 px-3 md:py-3 md:px-6 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="omen-logo group cursor-pointer flex items-center gap-2">
+                    <img src="Skipsee-3.svg" alt="Skipsee" class="h-8 md:h-12 object-contain">
+                    <span class="hidden md:inline text-sm font-medium text-gray-400 border-l border-white/10 pl-3">Talk
+                        to strangers!</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 md:gap-4">
+                <!-- Online Count Pill -->
+                <div
+                    class="text-xs md:text-sm text-gray-400 bg-white/5 border border-white/10 px-2 py-0.5 md:px-3 md:py-1 rounded-full backdrop-blur-sm">
+                    <span id="online-count-num" class="font-bold text-brand-500">0</span> <span
+                        class="hidden md:inline">online</span><span class="md:hidden">on</span>
+                </div>
+
+                <!-- Economy (Hidden on tiny screens, compact otherwise) -->
+                <div class="hidden sm:flex items-center gap-2 md:gap-3">
+                    <!-- Coins (Premium) -->
+
+
+                    <!-- Upgrade Button -->
+                    <button id="upgrade-vip-btn"
+                        class="flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-black text-xs md:text-sm font-bold rounded-full shadow-lg shadow-yellow-500/20 transition-all transform hover:scale-105 btn-premium btn-press-anim">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                            <path fill-rule="evenodd"
+                                d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Upgrade to VIP
+                    </button>
+                </div>
+
+                <!-- User Profile -->
+                <div class="relative">
+                    <button id="user-profile"
+                        class="flex items-center gap-2 hover:bg-white/5 p-1.5 pr-3 rounded-full transition-all border border-transparent hover:border-white/10">
+                        <img id="user-avatar"
+                            src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y" alt="User"
+                            class="h-8 w-8 rounded-full object-cover border border-white/10">
+                        <div class="hidden md:flex flex-col items-start -space-y-0.5">
+                            <span id="user-name" class="text-xs font-bold text-gray-200">Guest</span>
+                            <span class="text-[10px] text-gray-500">Free Account</span>
+                        </div>
+                        <!-- VIP Badge (Golden Card Icon) -->
+                        <div id="vip-badge-header" class="hidden ml-2" title="Premium Member">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="url(#vip-card-gradient)"
+                                class="w-6 h-6 animate-glow-gold filter drop-shadow-md">
+                                <defs>
+                                    <linearGradient id="vip-card-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#fef08a;stop-opacity:1" />
+                                        <stop offset="50%" style="stop-color:#eab308;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#854d0e;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <path
+                                    d="M2.25 6A2.25 2.25 0 014.5 3.75h15A2.25 2.25 0 0121.75 6v12a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6zm10.5 9a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z" />
+                                <path
+                                    d="M12 7.5a.75.75 0 01.75.75v.784l.654-.366a.75.75 0 11.734 1.31l-.64.358.583.504a.75.75 0 11-.986 1.138l-.595-.515-.595.515a.75.75 0 11-.986-1.138l.583-.504-.64-.358a.75.75 0 11.734-1.31l.654.366V8.25A.75.75 0 0112 7.5z"
+                                    fill="#fff" />
+                            </svg>
+                        </div>
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-gray-500 ml-1" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <!-- Dropdown (Same as before) -->
+                    <div id="user-profile-dropdown"
+                        class="absolute right-0 mt-3 w-56 bg-[#18181b] border border-white/10 rounded-2xl shadow-xl py-2 hidden z-[100] transform transition-all backdrop-blur-xl bg-opacity-95">
+                        <button id="settings-btn"
+                            class="w-full text-left px-4 py-2.5 text-sm text-gray-300 hover:bg-white/5 hover:text-white flex items-center gap-3 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            Settings
+                        </button>
+                        <a href="mailto:help@skipsee.com"
+                            class="w-full text-left px-4 py-2.5 text-sm text-gray-300 hover:bg-white/5 hover:text-white flex items-center gap-3 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                            Helpline
+                        </a>
+                        <div class="border-t border-white/5 my-1"></div>
+                        <a href="/legal/terms.html" target="_blank"
+                            class="w-full text-left px-4 py-2.5 text-sm text-gray-300 hover:bg-white/5 hover:text-white flex items-center gap-3 transition-colors">
+                            Terms & Privacy
+                        </a>
+                        <a href="/legal/guidelines.html" target="_blank"
+                            class="w-full text-left px-4 py-2.5 text-sm text-gray-300 hover:bg-white/5 hover:text-white flex items-center gap-3 transition-colors">
+                            Guidelines
+                        </a>
+                        <div class="border-t border-white/5 my-1"></div>
+                        <a href="/logout"
+                            class="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 flex items-center gap-3 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Area -->
+    <div id="app"
+        class="w-full h-full p-3 lg:p-6 flex flex-col lg:flex-row gap-5 overflow-hidden max-w-[1600px] mx-auto z-10 relative">
+
+        <!-- LEFT PANEL: Main Interaction (Stranger Video + Chat Overlay) -->
+        <div id="main-view"
+            class="flex-1 relative bg-black/40 border border-white/5 lg:rounded-[2.5rem] rounded-3xl overflow-hidden shadow-2xl flex flex-col group ring-1 ring-white/5 min-h-0 h-full">
+
+            <!-- Stranger Video -->
+            <div id="stranger-video-wrapper" class="absolute inset-0 w-full h-full bg-[#0a0a0f]">
+                <video id="remoteVideo" autoplay playsinline class="w-full h-full object-cover opacity-90"></video>
+
+                <!-- Waiting State (Centered) -->
+                <div
+                    class="video-placeholder absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                    <div class="relative mb-6">
+                        <div class="absolute inset-0 bg-brand-500 blur-[80px] opacity-15 animate-pulse"></div>
+                        <div
+                            class="w-24 h-24 lg:w-32 lg:h-32 bg-white/5 border border-white/10 rounded-full flex items-center justify-center backdrop-blur-md relative z-10 shadow-lg shadow-brand-500/10">
+                            <img src="https://api.iconify.design/fluent-emoji:person-shrugging.svg"
+                                class="w-12 h-12 lg:w-16 lg:h-16 opacity-80" alt="Waiting">
+                        </div>
+                    </div>
+                    <span
+                        class="text-white font-display font-bold text-2xl lg:text-3xl tracking-tight drop-shadow-lg">Stranger</span>
+                    <p
+                        class="text-brand-400 text-sm lg:text-base mt-3 font-medium animate-pulse bg-black/20 px-4 py-1 rounded-full backdrop-blur-md border border-brand-500/20">
+                        Waiting for connection...</p>
+                </div>
+
+                <!-- Static Noise Overlay -->
+                <div id="static-overlay" class="absolute inset-0 z-0 opacity-20 mix-blend-overlay pointer-events-none">
+                    <div
+                        class="w-full h-full bg-[url('https://upload.wikimedia.org/wikipedia/commons/7/76/Noise.png')] opacity-20">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Overlay: Info & Menu -->
+            <div
+                class="absolute top-0 left-0 w-full p-4 lg:p-8 flex justify-between items-start z-20 bg-gradient-to-b from-black/50 to-transparent pointer-events-none">
+                <!-- Location Tag -->
+                <div
+                    class="glass-panel px-5 py-2.5 rounded-full flex items-center gap-2.5 pointer-events-auto backdrop-blur-xl border-white/5 shadow-lg">
+                    <span class="text-xs font-bold text-gray-200 uppercase tracking-widest">Stranger</span>
+                    <div class="h-3 w-[1px] bg-white/20"></div>
+                    <span id="stranger-flag" class="text-lg">🌐</span>
+                    <span id="stranger-country" class="text-xs text-gray-300 font-medium">Global</span>
+                </div>
+
+                <!-- Three Dots Menu -->
+                <div class="relative pointer-events-auto">
+                    <button id="stranger-menu-btn"
+                        class="p-3.5 rounded-full bg-black/20 hover:bg-white/10 text-white backdrop-blur-md transition-all border border-white/5 hover:border-white/20 shadow-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                        </svg>
+                    </button>
+                    <!-- Dropdown -->
+                    <div id="stranger-menu-dropdown"
+                        class="hidden absolute right-0 mt-2 w-56 bg-[#18181b]/95 border border-white/10 rounded-2xl shadow-2xl py-2 overflow-hidden backdrop-blur-xl z-50 transform origin-top-right transition-all">
+                        <button id="block-user-action"
+                            class="w-full text-left px-5 py-3 text-sm text-gray-200 hover:bg-white/5 flex items-center gap-3 transition-colors">
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636">
+                                </path>
+                            </svg>
+                            Block User
+                        </button>
+                        <button id="report-user-action"
+                            class="w-full text-left px-5 py-3 text-sm text-red-400 hover:bg-red-500/10 flex items-center gap-3 transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+                                </path>
+                            </svg>
+                            Report User
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Overlay: Chat Log & Controls -->
+            <div
+                class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none flex flex-col justify-end p-4 lg:p-6 z-10">
+                <div id="chat-log"
+                    class="w-full max-h-[200px] overflow-y-auto scroll-smooth pointer-events-auto space-y-3.5 px-2 mb-4">
+                    <!-- Dynamic Messages will appear here -->
+                    <!-- Example placeholder styling logic handled in script.js -->
+                </div>
+
+                <!-- Main Actions (Unified with Overlay) -->
+                <div class="flex items-center justify-between relative z-10 w-full gap-4 pointer-events-auto">
+                    <!-- Left: Filters (Gender/Country) -->
+                    <div class="flex items-center gap-2 sm:gap-3">
+                        <button id="gender-filter-btn"
+                            class="bg-[#2a2a2e]/90 hover:bg-[#3a3a3e] text-gray-200 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full font-bold text-xs sm:text-sm flex items-center gap-2 transition-all border border-white/10 hover:border-white/20 shadow-lg backdrop-blur-md">
+                            <span class="text-brand-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9 18l6-6-6-6" />
+                                </svg>
+                            </span>
+                            <span class="hidden sm:inline">Gender</span>
+                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-500 ml-1" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 15l7-7 7 7" />
+                            </svg>
+                        </button>
+                        <button id="country-filter-btn"
+                            class="bg-[#2a2a2e]/90 hover:bg-[#3a3a3e] text-gray-200 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full font-bold text-xs sm:text-sm flex items-center gap-2 transition-all border border-white/10 hover:border-white/20 shadow-lg backdrop-blur-md">
+                            <span class="text-green-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <line x1="2" y1="12" x2="22" y2="12" />
+                                    <path
+                                        d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                                </svg>
+                            </span>
+                            <span class="hidden sm:inline">Country</span>
+                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-500 ml-1" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 15l7-7 7 7" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Right: Start Button -->
+                    <div class="flex items-center gap-3">
+                        <button id="start-stop-btn"
+                            class="bg-white text-black hover:bg-gray-100 font-display font-bold text-sm sm:text-base md:text-lg px-6 md:px-8 py-3 sm:py-3.5 rounded-full shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] transition-all transform hover:scale-105 active:scale-95 flex items-center gap-2 sm:gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path
+                                    d="M4.5 4.5a3 3 0 00-3 3v9a3 3 0 003 3h8.25a3 3 0 003-3v-9a3 3 0 00-3-3H4.5zM19.94 18.75l-2.69-2.69V7.94l2.69-2.69c.944-.945 2.56-.276 2.56 1.06v11.38c0 1.336-1.616 2.005-2.56 1.06z" />
+                            </svg>
+                            <span class="hidden md:inline">Start a video chat</span>
+                            <span class="md:hidden">Start</span>
+                        </button>
+                        <!-- Skip Button (Toggled via JS) -->
+                        <button id="next-btn"
+                            class="hidden bg-[#2a2a2e]/90 hover:bg-[#3a3a3e] text-white font-bold text-sm sm:text-base px-6 py-3 sm:py-3.5 rounded-full shadow-lg border border-white/10 transition-all active:scale-95 items-center gap-2">
+                            <span>Skip</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT PANEL: Sidebar / Controls (Unified Card) -->
+        <div id="sidebar"
+            class="hidden lg:flex flex-1 w-full flex-shrink-0 flex-col bg-black/40 border border-white/5 rounded-[2.5rem] overflow-hidden shadow-2xl relative group ring-1 ring-white/5 h-full z-20 min-h-0">
+
+            <!-- User Video (Full Sidebar Background) -->
+            <div id="user-video-wrapper" class="relative w-full flex-1 bg-black/20 group/video z-0 min-h-0">
+                <video id="localVideo" autoplay muted playsinline class="w-full h-full object-cover opacity-90"
+                    style="transform: scaleX(-1);"></video>
+                <div
+                    class="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 shadow-lg">
+                    <span class="text-xs font-bold text-white flex items-center gap-2">
+                        You <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                        <!-- Sidebar VIP Badge -->
+                        <div id="vip-badge-sidebar" class="hidden ml-1" title="Premium Member">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="url(#vip-card-gradient-2)"
+                                class="w-3 h-3 animate-glow-gold filter drop-shadow-md">
+                                <defs>
+                                    <linearGradient id="vip-card-gradient-2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#fef08a;stop-opacity:1" />
+                                        <stop offset="50%" style="stop-color:#eab308;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#854d0e;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <path
+                                    d="M2.25 6A2.25 2.25 0 014.5 3.75h15A2.25 2.25 0 0121.75 6v12a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6zm10.5 9a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z" />
+                                <path
+                                    d="M12 7.5a.75.75 0 01.75.75v.784l.654-.366a.75.75 0 11.734 1.31l-.64.358.583.504a.75.75 0 11-.986 1.138l-.595-.515-.595.515a.75.75 0 11-.986-1.138l.583-.504-.64-.358a.75.75 0 11.734-1.31l.654.366V8.25A.75.75 0 0112 7.5z"
+                                    fill="#fff" />
+                            </svg>
+                        </div>
+                    </span>
+                </div>
+                <!-- Controls Overlay (Hover) -->
+                <div
+                    class="absolute inset-0 bg-black/40 opacity-0 group-hover/video:opacity-100 transition-opacity flex items-center justify-center gap-4 backdrop-blur-sm">
+                    <button id="mute-btn"
+                        class="p-4 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-xl text-white border border-white/10 transition-transform hover:scale-110 shadow-xl">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z">
+                            </path>
+                        </svg>
+                    </button>
+                    <button id="camera-btn"
+                        class="p-4 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-xl text-white border border-white/10 transition-transform hover:scale-110 shadow-xl">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Controls Section (Bottom Half) -->
+            <div
+                class="absolute bottom-0 left-0 w-full flex flex-col gap-3 p-4 bg-gradient-to-t from-black/95 via-black/60 to-transparent z-20">
+                <!-- Ambient Glow inside sidebar -->
+                <div class="absolute -top-10 -right-10 w-40 h-40 bg-brand-500/5 blur-[50px] pointer-events-none"></div>
+
+                <!-- Interests -->
+                <div class="flex flex-col gap-2.5 relative z-10 pt-2">
+                    <label class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">
+                        <svg class="w-3.5 h-3.5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
+                        </svg>
+                        Interests
+                    </label>
+                    <div id="interests-container"
+                        class="w-full bg-black/20 border border-white/5 rounded-2xl p-3 min-h-[52px] focus-within:border-brand-500/50 focus-within:ring-2 focus-within:ring-brand-500/10 transition-all cursor-text flex flex-wrap gap-2 shadow-inner">
+                        <input type="text" id="interest-input" placeholder="Add interests..."
+                            class="bg-transparent border-none outline-none text-sm text-white placeholder-gray-500 flex-1 min-w-[100px]">
+                    </div>
+                </div>
+
+                <!-- Spacer Removed -->
+
+                <!-- Chat Input Section -->
+                <div class="flex flex-col gap-3 relative z-10">
+                    <div class="relative">
+                        <input type="text" id="chat-input" placeholder="Type a message..."
+                            class="w-full bg-black/30 border border-white/10 rounded-2xl py-4 pl-5 pr-14 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-brand-500/50 transition-all shadow-inner backdrop-blur-sm"
+                            disabled>
+                        <button id="send-btn"
+                            class="absolute right-2 top-2 p-2.5 bg-brand-500 hover:bg-brand-600 rounded-xl text-white shadow-lg shadow-brand-500/20 disabled:opacity-50 transition-all scale-95 hover:scale-105">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Main Actions Moved to Main View -->
+
+                <!-- MOBILE ONLY: Explicit Start/Next Buttons (Because Desktop ones are in Main View) -->
+                <!-- We duplicate these for mobile layout accessibility in the bottom card -->
+                <div class="mobile-actions hidden lg:hidden">
+                    <button id="mobile-start-btn" class="mobile-btn bg-white/20 hover:bg-white/30 font-bold">
+                        Start
+                    </button>
+                    <button id="mobile-next-btn" class="mobile-btn bg-brand-500/80 hover:bg-brand-500 font-bold hidden">
+                        Skip
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modals -->
+    <!-- Settings Modal -->
+    <div id="settings-modal"
+        class="fixed inset-0 bg-black/80 backdrop-blur-md z-[100] hidden flex items-center justify-center p-4">
+        <div
+            class="bg-[#18181b] border border-white/10 rounded-3xl p-6 w-full max-w-sm shadow-2xl ring-1 ring-white/10">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-display font-bold text-white">Settings</h3>
+                <button id="close-settings-btn" class="text-gray-400 hover:text-white transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Profile Settings -->
+            <div class="mb-6">
+                <h4 class="text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider">Profile</h4>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Display Name</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="edit-name-input"
+                            class="flex-1 p-2.5 bg-white/5 border border-white/10 text-white rounded-xl focus:ring-2 focus:ring-brand-500 outline-none text-sm transition-all focus:bg-white/10">
+                        <button id="save-profile"
+                            class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-brand-500/20 transition-all">Save</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Audio Settings -->
+            <div class="mb-6">
+                <h4 class="text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider">Audio</h4>
+
+                <div class="mb-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-gray-300">Mic Volume</span>
+                        <span id="gain-value" class="text-xs font-mono text-brand-400">1.0x</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                        </svg>
+                        <input type="range" id="audio-gain-slider" min="0" max="3" step="0.1" value="1"
+                            class="w-full h-1.5 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-brand-500">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-300">Noise Reduction</span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="noise-reduction-toggle" class="sr-only peer">
+                        <div
+                            class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-500">
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Modal -->
+    <div id="report-modal"
+        class="fixed inset-0 bg-black/80 backdrop-blur-md z-[100] hidden flex items-center justify-center p-4">
+        <div
+            class="bg-[#18181b] border border-white/10 rounded-3xl p-6 w-full max-w-sm shadow-2xl ring-1 ring-white/10">
+            <h3 class="text-xl font-display font-bold text-white mb-2">Report User</h3>
+            <p class="text-sm text-gray-400 mb-6 font-medium">Please describe the issue with the current user.</p>
+
+            <textarea id="report-reason"
+                class="w-full p-4 bg-white/5 border border-white/10 text-white rounded-xl focus:ring-2 focus:ring-red-500 outline-none h-32 resize-none text-sm mb-6 placeholder-gray-600 transition-all focus:bg-white/10"
+                placeholder="Describe the violation..."></textarea>
+
+            <div class="flex justify-end gap-3">
+                <button id="cancel-report"
+                    class="px-5 py-2.5 text-gray-300 hover:text-white hover:bg-white/5 rounded-xl font-bold transition-colors">Cancel</button>
+                <button id="submit-report"
+                    class="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold shadow-lg shadow-red-900/20 transition-all">Submit
+                    Report</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Age Verification Modal -->
+    <div id="age-verification-modal"
+        class="fixed inset-0 bg-[#030305] z-[200] hidden flex items-center justify-center p-4">
+        <div
+            class="bg-[#18181b] border border-white/10 rounded-3xl p-8 w-full max-w-md shadow-2xl text-center relative overflow-hidden">
+            <!-- Glow Effect -->
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-20 bg-brand-500/20 blur-3xl rounded-full">
+            </div>
+
+            <div class="relative z-10 mb-8">
+                <div
+                    class="w-20 h-20 bg-brand-500/10 border border-brand-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6 rotate-3">
+                    <span class="text-3xl font-bold text-brand-500">18+</span>
+                </div>
+                <h2 class="text-3xl font-display font-bold text-white mb-3">Age Verification</h2>
+                <p class="text-gray-400 text-lg leading-relaxed">
+                    You must be 18 years or older to enter. <br>
+                    Please confirm your age.
+                </p>
+            </div>
+
+            <div class="flex flex-col gap-3 relative z-10">
+                <button id="age-confirm-btn"
+                    class="w-full py-4 px-6 bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white font-bold text-lg rounded-2xl transition-all shadow-lg shadow-brand-500/20 transform hover:scale-[1.02] border border-white/10">
+                    I am 18 or older
+                </button>
+                <button id="age-deny-btn"
+                    class="w-full py-4 px-6 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white font-bold text-lg rounded-2xl transition-all border border-white/5">
+                    Exit
+                </button>
+            </div>
+            <p class="mt-8 text-xs text-gray-500 font-medium relative z-10">
+                By entering, you agree to our Terms of Service & Privacy Policy.
+            </p>
+        </div>
+    </div>
+
+    <!-- Gender Selection Modal -->
+    <div id="gender-modal"
+        class="fixed inset-0 bg-black/80 backdrop-blur-md z-[300] hidden flex items-center justify-center p-4">
+        <div class="bg-[#18181b] border border-white/10 rounded-3xl p-8 w-full max-w-md shadow-2xl text-center">
+            <h2 class="text-2xl font-display font-bold text-white mb-2">Complete Your Profile</h2>
+            <p class="text-gray-400 mb-8 font-medium">Please provide your details to continue.</p>
+
+            <!-- DOB Input -->
+            <div class="mb-6 text-left">
+                <label class="block text-sm font-bold text-gray-400 mb-2 uppercase tracking-wider">Date of Birth</label>
+                <input type="date" id="dob-input"
+                    class="w-full p-4 bg-white/5 border border-white/10 text-white rounded-xl focus:ring-2 focus:ring-brand-500 outline-none transition-all focus:bg-white/10 [color-scheme:dark]">
+            </div>
+
+            <!-- Gender Selection -->
+            <div class="mb-8 text-left">
+                <label class="block text-sm font-bold text-gray-400 mb-2 uppercase tracking-wider">Gender</label>
+                <div class="grid grid-cols-2 gap-4">
+                    <button id="select-gender-male"
+                        class="gender-option p-6 rounded-2xl border border-white/10 bg-white/5 hover:bg-blue-500/10 hover:border-blue-500 transition-all flex flex-col items-center gap-3 group"
+                        type="button" onclick="selectGender('male')">
+                        <span class="text-4xl group-hover:scale-110 transition-transform">👨</span>
+                        <span class="font-bold text-gray-300 group-hover:text-blue-400 transition-colors">Male</span>
+                    </button>
+                    <button id="select-gender-female"
+                        class="gender-option p-6 rounded-2xl border border-white/10 bg-white/5 hover:bg-pink-500/10 hover:border-pink-500 transition-all flex flex-col items-center gap-3 group"
+                        type="button" onclick="selectGender('female')">
+                        <span class="text-4xl group-hover:scale-110 transition-transform">👩</span>
+                        <span class="font-bold text-gray-300 group-hover:text-pink-400 transition-colors">Female</span>
+                    </button>
+                </div>
+                <input type="hidden" id="selected-gender" value="">
+            </div>
+
+            <button id="submit-demographics"
+                class="w-full py-3.5 px-6 bg-brand-500 hover:bg-brand-600 text-white font-bold text-lg rounded-xl transition-all shadow-lg shadow-brand-500/20 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02]">
+                Continue
+            </button>
+        </div>
+    </div>
+
+    <!-- Shop Modal -->
+    <div id="shop-modal"
+        class="fixed inset-0 bg-black/80 backdrop-blur-xl z-[250] hidden flex items-center justify-center p-4">
+        <div
+            class="bg-[#18181b]/90 border border-white/10 rounded-3xl p-6 md:p-8 w-full max-w-5xl shadow-2xl max-h-[90vh] overflow-y-auto relative overflow-hidden">
+
+            <!-- Close Button -->
+            <button id="close-shop-btn"
+                class="absolute top-6 right-6 p-2 rounded-full hover:bg-white/10 text-gray-400 hover:text-white transition-colors z-20">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+
+            <div class="flex items-center justify-between mb-10 relative z-10">
+                <div>
+                    <h3 class="text-3xl md:text-4xl font-display font-bold text-white mb-2">
+                        Diamond <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-sky-400">Store</span>
+                    </h3>
+                    <p class="text-gray-400">Unlock premium features & unlimited connection.</p>
+                </div>
+            </div>
+
+            <!-- VIP Banner -->
+            <div class="w-full mb-8 rounded-2xl overflow-hidden shadow-2xl border border-yellow-500/30 relative group">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>
+                <img src="vip-card.jpg" alt="VIP Membership"
+                    class="w-full h-40 md:h-52 object-cover transform group-hover:scale-105 transition-transform duration-700">
+                <div class="absolute bottom-4 left-6 z-20">
+                    <span
+                        class="bg-yellow-500 text-black text-[10px] font-bold px-2 py-0.5 rounded mb-2 inline-block">PREMIUM</span>
+                    <h4 class="text-2xl font-display font-bold text-white">VIP Status</h4>
+                </div>
+            </div>
+
+            <!-- Free/Exchange Options -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-10">
+                <!-- Free Ad Option -->
+                <div
+                    class="p-5 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-700 text-white flex items-center justify-between shadow-lg shadow-indigo-900/30 transform hover:scale-[1.01] transition-all border border-white/10">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="font-bold text-lg">Watch Ad</div>
+                            <div class="text-indigo-200 text-xs font-medium">+1 Coin Free</div>
+                        </div>
+                    </div>
+                    <button id="watch-ad-btn"
+                        class="px-5 py-2.5 bg-white text-indigo-700 font-bold rounded-xl hover:bg-indigo-50 transition-colors shadow-md">
+                        Watch
+                    </button>
+                </div>
+
+                <!-- Coin Exchange -->
+                <div
+                    class="p-5 rounded-2xl border border-white/10 bg-white/5 flex items-center justify-between hover:bg-white/10 transition-colors">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-gray-500/20 rounded-xl text-gray-400">
+                            <span class="text-2xl">🎫</span>
+                        </div>
+                        <div>
+                            <div class="font-bold text-white">Exchange Credits</div>
+                            <div class="text-gray-500 text-xs font-medium">150 Credits = 20 Coins</div>
+                        </div>
+                    </div>
+                    <button id="exchange-coins-btn"
+                        class="px-5 py-2.5 bg-gray-600 hover:bg-gray-500 text-white font-bold rounded-xl transition-colors shadow-lg">
+                        Exchange
+                    </button>
+                </div>
+            </div>
+
+            <!-- VIP Plans -->
+            <h4 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-6">Select VIP Plan</h4>
+            <div class="flex flex-wrap justify-center gap-4">
+
+                <!-- 2 Weeks -->
+                <div
+                    class="package-card w-full sm:w-[48%] lg:w-[18%] relative group p-1 rounded-[18px] bg-gradient-to-b from-white/10 to-transparent hover:from-white/20 hover:to-white/5 transition-all duration-300">
+                    <div
+                        class="bg-[#18181b] p-4 rounded-2xl h-full flex flex-col items-center text-center relative z-10">
+                        <div class="text-3xl mb-2">⏳</div>
+                        <div class="text-xl font-display font-bold text-white mb-0.5">2 Weeks</div>
+                        <div class="text-xs text-gray-500 font-bold uppercase tracking-wide mb-4">Trial</div>
+                        <button onclick="buyCoins('vip_2_weeks')"
+                            class="w-full mt-auto py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold rounded-xl transition-all btn-press-anim">
+                            199
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 1 Month -->
+                <div
+                    class="package-card w-full sm:w-[48%] lg:w-[18%] relative group p-1 rounded-[18px] bg-gradient-to-b from-yellow-500/20 to-transparent hover:from-yellow-500/30 hover:to-white/5 transition-all duration-300">
+                    <div
+                        class="bg-[#18181b] p-4 rounded-2xl h-full flex flex-col items-center text-center relative z-10 border border-yellow-500/20">
+                        <div class="text-3xl mb-2">📅</div>
+                        <div class="text-xl font-display font-bold text-white mb-0.5">1 Month</div>
+                        <div class="text-xs text-yellow-500 font-bold uppercase tracking-wide mb-4">Standard</div>
+                        <button onclick="buyCoins('vip_1_month')"
+                            class="w-full mt-auto py-2 bg-yellow-500 hover:bg-yellow-400 text-black font-bold rounded-xl transition-all shadow-lg shadow-yellow-500/20 btn-press-anim">
+                            1,200
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 5 Months -->
+                <div
+                    class="package-card w-full sm:w-[48%] lg:w-[18%] relative group p-1 rounded-[18px] bg-gradient-to-b from-brand-500/20 to-transparent hover:from-brand-500/30 hover:to-white/5 transition-all duration-300">
+                    <div class="absolute top-0 right-0 left-0 -mt-3 flex justify-center z-20">
+                        <span
+                            class="bg-brand-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm">Best
+                            Value</span>
+                    </div>
+                    <div
+                        class="bg-[#18181b] p-4 rounded-2xl h-full flex flex-col items-center text-center relative z-10 border border-brand-500/20 mt-1">
+                        <div class="text-3xl mb-2">🚀</div>
+                        <div class="text-xl font-display font-bold text-white mb-0.5">5 Months</div>
+                        <div class="text-xs text-brand-500 font-bold uppercase tracking-wide mb-4">Pro</div>
+                        <button onclick="buyCoins('vip_5_months')"
+                            class="w-full mt-auto py-2 bg-gradient-to-r from-brand-600 via-brand-500 to-brand-600 text-white font-bold rounded-xl transition-all border border-brand-500 hover:shadow-[0_0_15px_rgba(234,88,12,0.4)] btn-premium btn-press-anim">
+                            2,000
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 7 Months -->
+                <div
+                    class="package-card w-full sm:w-[48%] lg:w-[18%] relative group p-1 rounded-[18px] bg-gradient-to-b from-white/10 to-transparent hover:from-white/20 hover:to-white/5 transition-all duration-300">
+                    <div
+                        class="bg-[#18181b] p-4 rounded-2xl h-full flex flex-col items-center text-center relative z-10">
+                        <div class="text-3xl mb-2">💎</div>
+                        <div class="text-xl font-display font-bold text-white mb-0.5">7 Months</div>
+                        <div class="text-xs text-purple-500 font-bold uppercase tracking-wide mb-4">Elite</div>
+                        <button onclick="buyCoins('vip_7_months')"
+                            class="w-full mt-auto py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold rounded-xl transition-all btn-press-anim">
+                            5,500
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 1 Year -->
+                <div
+                    class="package-card w-full sm:w-[48%] lg:w-[18%] relative group p-1 rounded-[18px] bg-gradient-to-b from-white/10 to-transparent hover:from-white/20 hover:to-white/5 transition-all duration-300">
+                    <div
+                        class="bg-[#18181b] p-4 rounded-2xl h-full flex flex-col items-center text-center relative z-10">
+                        <div class="text-3xl mb-2">👑</div>
+                        <div class="text-xl font-display font-bold text-white mb-0.5">1 Year</div>
+                        <div class="text-xs text-gold-500 font-bold uppercase tracking-wide mb-4 text-yellow-500">Legend
+                        </div>
+                        <button onclick="buyCoins('vip_1_year')"
+                            class="w-full mt-auto py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold rounded-xl transition-all btn-press-anim">
+                            9,000
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <p class="text-center text-xs text-gray-600 mt-8 font-medium">
+                Secure payments processed by Razorpay. All prices in USD.
+            </p>
+        </div>
+    </div>
+
+    <!-- Limit Reached Modal -->
+    <div id="limit-modal"
+        class="fixed inset-0 bg-black/90 backdrop-blur-md z-[400] hidden flex items-center justify-center p-4">
+        <div class="bg-[#18181b] border border-white/10 rounded-3xl p-8 w-full max-w-sm shadow-2xl text-center">
+            <div class="text-6xl mb-6 animate-pulse">⏳</div>
+            <h2 class="text-2xl font-display font-bold text-white mb-3">Daily Limit Reached</h2>
+            <p class="text-gray-400 mb-8 leading-relaxed">
+                You've used your 10 free matches for today. <br>Upgrade to <span
+                    class="text-brand-500 font-bold">Premium</span> for unlimited matching!
+            </p>
+            <button id="open-shop-limit-btn"
+                class="w-full py-4 px-6 bg-gradient-to-r from-brand-500 to-pink-500 hover:from-brand-600 hover:to-pink-600 text-white font-bold rounded-xl transition-all shadow-lg shadow-pink-500/20 transform hover:scale-[1.02]">
+                Get Unlimited 🪙
+            </button>
+        </div>
+    </div>
+
+    <!-- Age Verification Modal -->
+    <div id="age-verification-modal"
+        class="fixed inset-0 bg-black/95 z-[500] hidden flex items-center justify-center p-4 backdrop-blur-xl">
+        <div
+            class="bg-[#18181b] border border-white/10 rounded-3xl p-8 w-full max-w-sm text-center shadow-2xl relative overflow-hidden">
+            <div class="absolute inset-0 bg-red-500/5 pointer-events-none"></div>
+            <div class="text-5xl mb-6">18</div>
+            <h2 class="text-2xl font-bold font-display text-white mb-2">Age Verification</h2>
+            <p class="text-gray-400 mb-8 text-sm leading-relaxed">You must be 18 years or older to enter.<br>This
+                website contains user-generated content.</p>
+            <div class="grid grid-cols-2 gap-4 relative z-10">
+                <button onclick="denyAge()"
+                    class="py-3 px-6 bg-white/5 hover:bg-white/10 text-gray-300 font-bold rounded-xl transition-all border border-white/5">Exit</button>
+                <button onclick="confirmAge()"
+                    class="py-3 px-6 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-xl transition-all shadow-lg shadow-brand-500/20">I
+                    am 18+</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gender Selection Modal -->
+    <div id="gender-modal"
+        class="fixed inset-0 bg-black/95 z-[500] hidden flex items-center justify-center p-4 backdrop-blur-xl">
+        <div class="bg-[#18181b] border border-white/10 rounded-3xl p-8 w-full max-w-sm text-center shadow-2xl">
+            <h2 class="text-2xl font-bold font-display text-white mb-2">Welcome to Ome</h2>
+            <p class="text-gray-400 mb-8 text-sm">Select your gender to continue matching.</p>
+
+            <div class="flex gap-4 mb-8">
+                <button id="select-gender-male" onclick="selectGender('male')"
+                    class="flex-1 py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center gap-2 hover:bg-blue-500/10 hover:border-blue-500/50 transition-all group">
+                    <span class="text-3xl grayscale group-hover:grayscale-0 transition-all">👨</span>
+                    <span class="text-sm font-bold text-gray-400 group-hover:text-blue-400">Male</span>
+                </button>
+                <button id="select-gender-female" onclick="selectGender('female')"
+                    class="flex-1 py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center gap-2 hover:bg-pink-500/10 hover:border-pink-500/50 transition-all group">
+                    <span class="text-3xl grayscale group-hover:grayscale-0 transition-all">👩</span>
+                    <span class="text-sm font-bold text-gray-400 group-hover:text-pink-400">Female</span>
+                </button>
+            </div>
+            <input type="hidden" id="selected-gender">
+
+            <div class="mb-6 text-left">
+                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">Date of Birth</label>
+                <input type="date" id="dob-input"
+                    class="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-brand-500 outline-none transition-all placeholder-gray-600">
+            </div>
+
+            <button onclick="submitDemographics()"
+                class="w-full py-4 bg-white text-black font-bold rounded-xl transition-all hover:scale-[1.02] shadow-xl">Continue</button>
+        </div>
+    </div>
+
+    <!-- Ad Modal -->
+    <div id="ad-modal"
+        class="fixed inset-0 bg-black/95 z-[600] hidden flex items-center justify-center p-4 backdrop-blur-md">
+        <div
+            class="bg-[#18181b] border border-white/10 rounded-2xl p-1 w-full max-w-lg aspect-video relative shadow-2xl flex flex-col">
+            <!-- Placeholder Ad Content -->
+            <div class="flex-1 bg-black rounded-xl flex items-center justify-center relative overflow-hidden group">
+                <img src="https://via.placeholder.com/640x360?text=Advertisement"
+                    class="absolute inset-0 w-full h-full object-cover opacity-80" alt="Ad">
+                <div class="relative z-10 bg-black/50 p-4 rounded-xl backdrop-blur-sm">
+                    <p class="text-white font-bold">Advertisement</p>
+                    <p class="text-xs text-gray-300">Support Ome to keep it free!</p>
+                </div>
+                <div
+                    class="absolute top-2 right-2 bg-black/60 px-2 py-1 rounded text-xs text-white uppercase tracking-wider font-bold">
+                    Ad</div>
+            </div>
+
+            <!-- Footer / Timer -->
+            <div class="p-4 flex items-center justify-between">
+                <div class="text-sm text-gray-400">
+                    Wait <span id="ad-timer" class="text-brand-500 font-mono font-bold">5</span>s to skip
+                </div>
+                <button id="close-ad-btn" onclick="closeAd()"
+                    class="px-6 py-2 bg-white/10 hover:bg-white/20 text-white text-sm font-bold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled>
+                    Skip Ad
+                </button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
