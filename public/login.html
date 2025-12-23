@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Login to Skipsee to start random video chatting. Secure, fast, and anonymous access to meet strangers worldwide.">
+    <meta name="keywords" content="login, skipsee login, video chat login, random chat app">
+    <meta name="robots" content="index, follow">
+
+    <title>Skipsee - Login</title>
+    <link rel="icon" type="image/svg+xml" href="Skipsee-3.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            500: '#ff751f', // LOGO ORANGE
+                            600: '#ea580c',
+                        },
+                        sky: {
+                            400: '#38b6ff', // LOGO BLUE
+                        }
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 6s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%': { opacity: 0.4, transform: 'scale(1)' },
+                            '100%': { opacity: 0.7, transform: 'scale(1.1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #030305;
+            /* Deep Midnight Black */
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Glows */
+        .glow-orange {
+            position: fixed;
+            top: -30%;
+            left: -10%;
+            width: 70vw;
+            height: 70vw;
+            background: radial-gradient(circle, rgba(255, 117, 31, 0.12) 0%, transparent 70%);
+            filter: blur(80px);
+            z-index: -1;
+            animation: pulse-glow 8s ease-in-out infinite alternate;
+        }
+
+        .glow-blue {
+            position: fixed;
+            bottom: -30%;
+            right: -10%;
+            width: 70vw;
+            height: 70vw;
+            background: radial-gradient(circle, rgba(56, 182, 255, 0.1) 0%, transparent 70%);
+            filter: blur(80px);
+            z-index: -1;
+            animation: pulse-glow 9s ease-in-out infinite alternate-reverse;
+        }
+
+        .glass-panel {
+            background: rgba(20, 20, 25, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow:
+                0 20px 40px -10px rgba(0, 0, 0, 0.5),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+
+<body
+    class="min-h-screen flex flex-col items-center justify-center p-4 relative font-sans selection:bg-brand-500 selection:text-white">
+
+    <!-- Background Layers -->
+    <div class="glow-orange"></div>
+    <div class="glow-blue"></div>
+
+    <div class="w-full max-w-md relative z-10">
+        <!-- Logo Section -->
+        <div class="text-center mb-10">
+            <a href="intro.html" class="inline-block group transition-transform hover:scale-105 duration-300">
+                <img src="Skipsee-3.svg" alt="Skipsee"
+                    class="h-20 mx-auto mb-6 object-contain drop-shadow-[0_0_25px_rgba(56,182,255,0.4)]">
+            </a>
+            <p class="text-gray-400 text-lg font-medium tracking-wide">Enter the conversation.</p>
+        </div>
+
+        <!-- Login Card -->
+        <div class="glass-panel rounded-3xl p-8 md:p-10">
+            <h2 class="text-2xl font-display font-bold text-white mb-2 text-center">Welcome Back</h2>
+            <p class="text-center text-gray-500 text-sm mb-8">Sign in to continue connecting</p>
+
+            <div id="error-message"
+                class="hidden mb-6 p-4 bg-red-500/10 text-red-400 text-sm rounded-xl border border-red-500/20 flex items-center">
+                <svg class="w-5 h-5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                        clip-rule="evenodd" />
+                </svg>
+                <span id="error-text">Authentication failed</span>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Google Button -->
+                <button id="google-btn" disabled
+                    class="w-full flex items-center justify-center bg-white text-gray-700 font-bold py-4 px-4 rounded-2xl transition-all duration-300 hover:scale-[1.02] shadow-lg shadow-white/5 opacity-60 cursor-not-allowed group">
+                    <svg class="w-5 h-5 mr-3 grayscale opacity-50 transition-all group-hover:grayscale-0 group-hover:opacity-100"
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                            fill="#4285F4" />
+                        <path
+                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                            fill="#34A853" />
+                        <path
+                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                            fill="#FBBC05" />
+                        <path
+                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                            fill="#EA4335" />
+                    </svg>
+                    <span>Continue with Google</span>
+                </button>
+
+                <!-- Phone Login Section -->
+                <div id="phone-login-container" class="space-y-4">
+                    <button id="phone-btn" disabled
+                        class="w-full flex items-center justify-center bg-gray-800 text-white font-bold py-4 px-4 rounded-2xl transition-all duration-300 hover:scale-[1.02] shadow-lg shadow-white/5 opacity-60 cursor-not-allowed border border-white/10 hover:bg-gray-700">
+                        <svg class="w-5 h-5 mr-3 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                        <span>Continue with Phone</span>
+                    </button>
+
+                    <!-- Phone Input Form (Hidden initially) -->
+                    <div id="phone-input-group"
+                        class="hidden space-y-3 animate-in fade-in slide-in-from-top-4 duration-300">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-400 text-lg">📱</span>
+                            </div>
+                            <input type="tel" id="phone-number" placeholder="+1 234 567 8900"
+                                class="w-full bg-black/50 border border-white/10 text-white text-lg rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent block pl-10 p-3 placeholder-gray-600 transition-all">
+                        </div>
+                        <div id="recaptcha-container"></div>
+                        <button id="send-code-btn"
+                            class="w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-3 px-4 rounded-xl transition-colors shadow-lg shadow-brand-500/20">
+                            Send Code
+                        </button>
+                        <button id="cancel-phone-btn" class="w-full text-gray-500 hover:text-gray-300 text-sm py-2">
+                            Cancel
+                        </button>
+                    </div>
+
+                    <!-- OTP Input Form (Hidden initially) -->
+                    <div id="otp-input-group"
+                        class="hidden space-y-3 animate-in fade-in slide-in-from-top-4 duration-300">
+                        <p class="text-gray-400 text-sm text-center">Enter the code sent to your phone</p>
+                        <input type="text" id="otp-code" placeholder="123456" maxlength="6"
+                            class="w-full bg-black/50 border border-white/10 text-white text-center text-2xl tracking-[0.5em] font-mono rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent block p-3 placeholder-gray-700 transition-all">
+                        <button id="verify-code-btn"
+                            class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-xl transition-colors shadow-lg shadow-green-500/20">
+                            Verify & Login
+                        </button>
+                        <button id="retry-phone-btn" class="w-full text-gray-500 hover:text-gray-300 text-sm py-2">
+                            Retry Phone Number
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Consent Checkbox -->
+                <div class="flex items-start mt-6 pt-6 border-t border-white/10">
+                    <div class="flex items-center h-5">
+                        <input id="consent-checkbox" type="checkbox"
+                            class="w-4 h-4 text-brand-600 border-gray-600 rounded focus:ring-brand-500 bg-gray-800/50 cursor-pointer">
+                    </div>
+                    <div class="ml-3 text-sm leading-relaxed">
+                        <label for="consent-checkbox" class="font-medium text-gray-400 select-none cursor-pointer">
+                            I agree to the <a href="/legal/terms.html" target="_blank"
+                                class="text-sky-400 hover:text-sky-300 transition-colors underline decoration-sky-400/30">Terms</a>
+                            and <a href="/legal/privacy.html" target="_blank"
+                                class="text-sky-400 hover:text-sky-300 transition-colors underline decoration-sky-400/30">Privacy
+                                Policy</a> to enable login.
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 text-center text-xs text-gray-500 font-medium pb-4 border-t border-white/5 pt-6">
+                &copy; 2024 Skipsee Inc. • All signals encrypted.
+                <div class="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2 text-[11px] text-gray-600">
+                    <a href="/legal/terms.html" class="hover:text-gray-300 transition-colors">Terms</a>
+                    <a href="/legal/privacy.html" class="hover:text-gray-300 transition-colors">Privacy</a>
+                    <a href="/legal/safety.html" class="hover:text-gray-300 transition-colors">Safety</a>
+                    <a href="/legal/cookies.html" class="hover:text-gray-300 transition-colors">Cookies</a>
+                    <a href="/legal/contact.html" class="hover:text-gray-300 transition-colors">Contact</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Removed separate consent.js script -->
+
+    <script type="module" src="login.js"></script>
+    <script>
+        const googleBtn = document.getElementById('google-btn');
+        const phoneBtn = document.getElementById('phone-btn');
+        const consentCheckbox = document.getElementById('consent-checkbox');
+
+        // Consent Toggle Logic
+        consentCheckbox.addEventListener('change', (e) => {
+            const isChecked = e.target.checked;
+
+            if (isChecked) {
+                // Enable Google
+                googleBtn.disabled = false;
+                googleBtn.classList.remove('cursor-not-allowed', 'opacity-60', 'text-gray-400');
+                googleBtn.classList.add('hover:bg-gray-50', 'hover:border-gray-300', 'text-gray-700', 'group');
+                googleBtn.querySelector('svg').classList.remove('grayscale', 'opacity-50');
+
+                // Enable Phone
+                phoneBtn.disabled = false;
+                phoneBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+                phoneBtn.classList.add('hover:bg-gray-700', 'shadow-white/10');
+            } else {
+                // Disable Google
+                googleBtn.disabled = true;
+                googleBtn.classList.add('cursor-not-allowed', 'opacity-60', 'text-gray-400');
+                googleBtn.classList.remove('hover:bg-gray-50', 'hover:border-gray-300', 'text-gray-700', 'group');
+                googleBtn.querySelector('svg').classList.add('grayscale', 'opacity-50');
+
+                // Disable Phone
+                phoneBtn.disabled = true;
+                phoneBtn.classList.add('opacity-60', 'cursor-not-allowed');
+                phoneBtn.classList.remove('hover:bg-gray-700', 'shadow-white/10');
+            }
+        });
+
+        // Simple redirects for OAuth
+        googleBtn.addEventListener('click', () => {
+            if (!googleBtn.disabled) window.location.href = '/auth/google';
+        });
+
+        // Phone button logic is handled in login.js, but we can add a visual trigger here if needed
+        // For now, logic stays in login.js
+
+        // Check for error query param
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('error')) {
+            const errorMsgEl = document.getElementById('error-message');
+            const errorTextEl = document.getElementById('error-text');
+            errorTextEl.textContent = "Authentication failed. Please try again.";
+            errorMsgEl.classList.remove('hidden');
+        }
+    </script>
+</body>
+
+</html>
