@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skipsee - Random Video Chat</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script defer src="script.js"></script>
+</head>
+
+<body>
+    <!-- Transparent Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-content">
+            <div class="nav-logo">Skipsee</div>
+            <div class="nav-profile-container" id="profile-trigger">
+                <div class="profile-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+                <!-- Profile Dropdown -->
+                <div class="profile-dropdown" id="profile-dropdown">
+                    <div class="dropdown-item">
+                        <span class="icon">👤</span> Login / Profile
+                    </div>
+                    <div class="dropdown-item">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="noise-reduction-toggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <span>Noise Reduction</span>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-item text-danger" id="logout-btn">
+                        <span class="icon">🚪</span> Logout
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="app-container">
+        <!-- Main Stage (Top Split) -->
+        <main class="main-stage">
+            <!-- Left Stage: Branding / Local Video -->
+            <div class="stage-left" id="stage-left">
+                <!-- Branding / Placeholder State -->
+                <div class="branding-overlay" id="branding-overlay">
+                    <div class="logo-large">Skipsee</div>
+                    <div class="users-online">
+                        <span class="dot"></span>
+                        <span id="user-count">... users online</span>
+                    </div>
+                </div>
+                <!-- Local Video (Hidden initially or active) -->
+                <video id="local-video" autoplay playsinline muted></video>
+            </div>
+
+            <!-- Right Stage: Remote Video -->
+            <div class="stage-right">
+                <div class="video-placeholder">
+                    <div class="spinner" id="spinner" style="display: none;"></div>
+                    <div class="status-text" id="remote-status">Click Start to find a partner</div>
+                </div>
+                <video id="remote-video" autoplay playsinline></video>
+            </div>
+        </main>
+
+        <!-- Control Dock (Bottom Bar) -->
+        <footer class="control-dock">
+            <!-- Action Buttons (Left) -->
+            <div class="actions-group">
+                <button id="start-btn" class="action-card btn-start">
+                    <span class="btn-label">Start</span>
+                </button>
+                <button id="stop-btn" class="action-card btn-stop" style="display: none;">
+                    <span class="btn-label">Stop</span>
+                </button>
+                <button id="skip-btn" class="action-card btn-skip">
+                    <span class="btn-label">Skip</span>
+                </button>
+
+                <div class="action-card setting-card">
+                    <span class="setting-label">Country</span>
+                    <span class="setting-value">Global</span>
+                </div>
+
+                <div class="action-card setting-card">
+                    <span class="setting-label">Gender</span>
+                    <span class="setting-value">All</span>
+                </div>
+            </div>
+
+            <!-- Chat Module (Right) -->
+            <div class="chat-module">
+                <div class="chat-log" id="chat-messages">
+                    <div class="system-msg">
+                        <span class="info-icon">ℹ️</span>
+                        Welcome to Skipsee! Click Start to connect.
+                    </div>
+                </div>
+                <div class="chat-input-wrapper">
+                    <input type="text" id="chat-input" placeholder="Type a message..." disabled>
+                    <button id="send-btn" disabled>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>
